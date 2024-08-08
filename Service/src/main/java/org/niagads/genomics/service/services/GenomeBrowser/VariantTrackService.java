@@ -33,7 +33,6 @@ public class VariantTrackService extends AbstractWdkService {
     private static final String ADSP_TRACK = "ADSP";
     private static final String ADSP_WES_TRACK = "ADSP_WES";
     private static final String ADSP_WGS_TRACK = "ADSP_WGS";
-    private static final String ADSP_GRCh38_TRACK = "ADSP_17K"; // temp solution
 
     private static final String CHROMOSOME_PARAM = "chromosome";
     private static final String TRACK_PARAM = "track";
@@ -105,7 +104,14 @@ public class VariantTrackService extends AbstractWdkService {
         LOG.debug("sql: " + sql);
         SQLRunner runner = new SQLRunner(ds, sql, "track-variant-data-query");
         if (projectId.equals("GRCh38")) {
-            runner.executeQuery(new Object[] {chromosome, locationStart, locationEnd}, handler);
+            if (track.startsWith("ADSP")) {
+                String[] trackInfo = track.split("_");
+                String releaseVersion = trackInfo[1].equals("17K")  ? "R3" : trackInfo[1];
+                runner.executeQuery(new Object[] {chromosome, locationStart, locationEnd, releaseVersion}, handler);
+            }
+            else {
+                runner.executeQuery(new Object[] {chromosome, locationStart, locationEnd}, handler);
+            }
         }
         else {
             runner.executeQuery(
@@ -130,8 +136,8 @@ public class VariantTrackService extends AbstractWdkService {
         String projectId = getWdkModel().getProperties().get("PROJECT_ID");
 
         if (projectId.equals("GRCh38")) {
-            if (track.equals(ADSP_GRCh38_TRACK)) {
-                return "SELECT get_adsp_variants(?,?::int,?::int)::text AS result";
+            if (track.startsWith("ADSP")) {
+                return "SELECT get_adsp_variants(?,?::int,?::int, ?)::text AS result";
             } else if (track.equals(DBSNP_TRACK)) {
                 return "SELECT get_dbsnp_variants(?,?::int,?::int)::text AS result";
             } else if (track.equals(DBSNP_COMMON_TRACK)) {

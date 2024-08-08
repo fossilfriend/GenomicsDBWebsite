@@ -37,7 +37,7 @@ import { _externalUrls } from "genomics-client/data/_externalUrls";
 
 const MemoBroswer = React.memo(GenomeBrowser);
 
-const DEFAULT_TRACKS = ["ADSP_17K"];
+const DEFAULT_TRACKS = ["ADSP_R4"];
 
 export const useStyles = makeStyles((theme: Theme) =>
     createStyles({
