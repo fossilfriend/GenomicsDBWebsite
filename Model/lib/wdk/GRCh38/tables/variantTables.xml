@@ -95,7 +95,7 @@ CASE WHEN r.linked_variant IS NULL
 THEN position_pk.record_primary_key
 ELSE r.linked_variant::text END AS linked_variant_record_primary_key
 FROM ExpandedLinkage r, 
-get_variant_pk_by_position(replace(r.chromosome::text, 'chr', '') || ':' || r.linked_position::text, false) position_pk)
+find_variant_by_position(r.chromosome, r.linked_position, false) position_pk)
 
 SELECT m.record_primary_key AS source_id,
 m.population,

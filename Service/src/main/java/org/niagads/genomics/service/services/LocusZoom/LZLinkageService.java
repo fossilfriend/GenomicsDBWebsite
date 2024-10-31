@@ -65,8 +65,7 @@ public class LZLinkageService extends AbstractWdkService {
         + "THEN position_pk.record_primary_key" + NL
         + "ELSE r.linked_variant::text END AS linked_variant" + NL
         + "FROM ExpandedLinkage r," + NL
-        + "get_variant_pk_by_position(replace(r.chromosome::text, 'chr', '') || ':' || r.linked_position::text, false) position_pk)" + NL
-
+        + "find_variant_by_position(r.chromosome, r.linked_position, false) position_pk)" + NL
         + "SELECT jsonb_build_object('data'," + NL
         + "jsonb_build_object('linked_variant', jsonb_agg(m.linked_variant ORDER BY linked_variant)) ||" + NL
         + "jsonb_build_object('r_squared', jsonb_agg(m.r_squared ORDER BY linked_variant)))::text AS result" + NL
