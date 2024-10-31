@@ -112,7 +112,9 @@ public class TrackConfigService extends AbstractWdkService {
             + "FROM NIAGADS.GWASBrowserTracks t," + NL
             + "FieldPlaceHolders design, FieldPlaceHolders biosample" + NL
             + "WHERE design.category = 'experimental_design'" + NL
-            + "AND biosample.category = 'biosample_characteristics')";
+            + "AND biosample.category = 'biosample_characteristics'" + NL
+            + "ORDER BY regexp_replace(replace(regexp_replace(track_config->>'name', '^.* ', ''), ')', ''), '\\([a-zA-Z]+', '') DESC)";
+        // last line orders by year desc
 
     private static final String FUNCTIONAL_GENOMICS_SQL = "FGTracks AS (SELECT" + NL
             + "track, track_type, data_source," + NL
