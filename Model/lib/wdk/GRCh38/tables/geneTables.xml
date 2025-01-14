@@ -441,7 +441,7 @@
 		 CASE WHEN r.restricted_stats->>'REPLICATION SAMPLE SIZE' = 'NA' THEN NULL 
 		 ELSE r.restricted_stats->>'REPLICATION SAMPLE SIZE' END  AS replicate_sample,
 		 
-		 r.restricted_stats->>'DISEASE/TRAIT' AS trait,
+		 r.restricted_stats->>'trait' AS trait,
 
 		 multi_replace(r.restricted_stats->>'MAPPED_TRAIT',
 		 ARRAY[', ', 'Alzheimer disease', 'Alzheimers'],
@@ -449,7 +449,7 @@
 
 		 FROM NIAGADS.VariantGWASTopHits r, tracks t, id, CBIL.GeneAttributes ga
 		 WHERE t.protocol_app_node_id = r.protocol_app_node_id
-		 AND r.restricted_stats->>'DISEASE/TRAIT' ILIKE '%Alzheimer%'
+		 AND r.restricted_stats->>'trait' ILIKE '%Alzheimer%'
                  AND id.source_id = ga.source_id
                  AND ga.bin_index_100kb_flank @> r.bin_index
                  AND int4range(ga.location_start - 100000, ga.location_end + 100000, '[]') 
@@ -522,13 +522,13 @@
 		 CASE WHEN r.restricted_stats->>'REPLICATION SAMPLE SIZE' = 'NA' THEN NULL 
 		 ELSE r.restricted_stats->>'REPLICATION SAMPLE SIZE' END  AS replicate_sample,
 		 
-		 r.restricted_stats->>'DISEASE/TRAIT' AS trait,
+		 r.restricted_stats->>'trait' AS trait,
 		 
 		 replace(r.restricted_stats->>'MAPPED_TRAIT', ', ', ' // ') AS mapped_efo_trait
 		 
 		 FROM NIAGADS.VariantGWASTopHits r, tracks t, id, CBIL.GeneAttributes ga
 		 WHERE t.protocol_app_node_id = r.protocol_app_node_id
-		 AND r.restricted_stats->>'DISEASE/TRAIT' NOT ILIKE '%Alzheimer%'
+		 AND r.restricted_stats->>'trait' NOT ILIKE '%Alzheimer%'
                  AND id.source_id = ga.source_id
                  AND ga.bin_index_100kb_flank @> r.bin_index
                  AND int4range(ga.location_start - 100000, ga.location_end + 100000, '[]') 
