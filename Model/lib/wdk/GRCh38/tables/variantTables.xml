@@ -331,7 +331,7 @@ get_variant_display_details(m.linked_variant_record_primary_key) v
 		 CASE WHEN r.restricted_stats->>'REPLICATION SAMPLE SIZE' = 'NA' THEN NULL 
 		 ELSE r.restricted_stats->>'REPLICATION SAMPLE SIZE' END  AS replicate_sample,
 
-		 r.restricted_stats->>'DISEASE/TRAIT' AS trait,
+		 r.restricted_stats->>'trait' AS trait,
 
 		 build_link_attribute(r.restricted_stats->>'MAPPED_TRAIT', 
 		 '@EFO_TRAIT_URL@', replace(r.restricted_stats->>'MAPPED_TRAIT_URI', 'http://www.ebi.ac.uk/efo/', ''), NULL) AS mapped_efo_trait
@@ -339,7 +339,7 @@ get_variant_display_details(m.linked_variant_record_primary_key) v
 		 FROM Results.VariantGWAS r, tracks t, id
 		 WHERE t.protocol_app_node_id = r.protocol_app_node_id
 		 AND r.variant_record_primary_key = id.source_id
-		 AND r.restricted_stats->>'DISEASE/TRAIT' ILIKE '%Alzheimer%'
+		 AND r.restricted_stats->>'trait' ILIKE '%Alzheimer%'
 		 ORDER BY r.neg_log10_pvalue DESC
 	]]>
       </sql>
@@ -387,7 +387,7 @@ get_variant_display_details(m.linked_variant_record_primary_key) v
 		 CASE WHEN r.restricted_stats->>'REPLICATION SAMPLE SIZE' = 'NA' THEN NULL 
 		 ELSE r.restricted_stats->>'REPLICATION SAMPLE SIZE' END  AS replicate_sample,
 
-		 r.restricted_stats->>'DISEASE/TRAIT' AS trait,
+		 r.restricted_stats->>'trait' AS trait,
 
 		 build_link_attribute(r.restricted_stats->>'MAPPED_TRAIT', 
 		 '@EFO_TRAIT_URL@', replace(r.restricted_stats->>'MAPPED_TRAIT_URI', 'http://www.ebi.ac.uk/efo/', ''), NULL) AS mapped_efo_trait
@@ -395,7 +395,7 @@ get_variant_display_details(m.linked_variant_record_primary_key) v
 		 FROM Results.VariantGWAS r, tracks t, id
 		 WHERE t.protocol_app_node_id = r.protocol_app_node_id
 		 AND r.variant_record_primary_key = id.source_id
-		 AND r.restricted_stats->>'DISEASE/TRAIT' NOT ILIKE '%Alzheimer%'
+		 AND r.restricted_stats->>'trait' NOT ILIKE '%Alzheimer%'
 		 ORDER BY r.neg_log10_pvalue DESC
 	]]>
       </sql>
